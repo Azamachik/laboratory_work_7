@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <regex>
 #include <iomanip>
 #include <limits>
 #include <iterator>
@@ -29,14 +30,14 @@ void addElement(Node*& head, const std::string& fullName, int age, const std::st
 
 void printList(Node* head) {
 	if (!head) {
-		std::cout << "‘¯¨á®ª ¯ãáâ" << std::endl;
+		std::cout << "Ð¡Ð¿Ð¸ÑÐ¾Ðº Ð¿ÑƒÑÑ‚" << std::endl;
 		return;
 	}
 
 	Node* current = head;
-	std::cout << "‘¯¨á®ª" << std::endl;
+	std::cout << "Ð¡Ð¿Ð¸ÑÐ¾Ðº" << std::endl;
 	do {
-		std::cout << "”ˆŽ: " << current->fullName << ", ‚®§à áâ: " << current->age << ", ‘¥¬¥©­®¥ ¯®«®¦¥­¨¥: " << current->maritalStatus << std::endl;
+		std::cout << "Ð¤Ð˜Ðž: " << current->fullName << ", Ð’Ð¾Ð·Ñ€Ð°ÑÑ‚: " << current->age << ", Ð¡ÐµÐ¼ÐµÐ¹Ð½Ð¾Ðµ Ð¿Ð¾Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ: " << current->maritalStatus << std::endl;
 		current = current->next;
 	} while (current != head);
 	std::cout << std::endl;
@@ -45,7 +46,7 @@ void printList(Node* head) {
 void saveListToFile(Node* head, const std::string& filename) {
 	std::ofstream outFile(filename);
 	if (!outFile) {
-		std::cerr << "Žè¨¡ª  ®âªàëâ¨ï ä ©«  ¤«ï § ¯¨á¨" << std::endl;
+		std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ° Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚Ð¸Ñ Ñ„Ð°Ð¹Ð»Ð° Ð´Ð»Ñ Ð·Ð°Ð¿Ð¸ÑÐ¸" << std::endl;
 		return;
 	}
 	if (!head) {
@@ -62,7 +63,7 @@ void saveListToFile(Node* head, const std::string& filename) {
 bool loadListFromFile(Node*& head, const std::string& filename) {
 	std::ifstream inFile(filename);
 	if (!inFile) {
-		std::cerr << "Žè¨¡ª  ®âªàëâ¨ï ä ©«  ¤«ï çâ¥­¨ï" << std::endl;
+		std::cerr << "ÐžÑˆÐ¸Ð±ÐºÐ° Ð¾Ñ‚ÐºÑ€Ñ‹Ñ‚Ð¸Ñ Ñ„Ð°Ð¹Ð»Ð° Ð´Ð»Ñ Ñ‡Ñ‚ÐµÐ½Ð¸Ñ" << std::endl;
 		return false;
 	}
 
@@ -77,16 +78,16 @@ bool loadListFromFile(Node*& head, const std::string& filename) {
 		ss >> age >> delimiter;
 		std::getline(ss, maritalStatus);
 		if(!(fullName.length() && bool(age) && maritalStatus.length())) {
-			cerr << "Žè¨¡ª  ¯à¨ çâ¥­¨¨ ¤ ­­ëå.\n";
-			cerr << "à®¯ãé¥­® ®¤­® ¨§ ¯®«¥©.\n";
-			cerr << "®¦ «ã©áâ , ¨á¯à ¢ìâ¥ á®¤¥à¦¨¬®¥ ä ©« .\n";
+			cerr << "ÐžÑˆÐ¸Ð±ÐºÐ° Ð¿Ñ€Ð¸ Ñ‡Ñ‚ÐµÐ½Ð¸Ð¸ Ð´Ð°Ð½Ð½Ñ‹Ñ….\n";
+			cerr << "ÐŸÑ€Ð¾Ð¿ÑƒÑ‰ÐµÐ½Ð¾ Ð¾Ð´Ð½Ð¾ Ð¸Ð· Ð¿Ð¾Ð»ÐµÐ¹.\n";
+			cerr << "ÐŸÐ¾Ð¶Ð°Ð»ÑƒÐ¹ÑÑ‚Ð°, Ð¸ÑÐ¿Ñ€Ð°Ð²ÑŒÑ‚Ðµ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ð¼Ð¾Ðµ Ñ„Ð°Ð¹Ð»Ð°.\n";
 			return false;
 		}
 		if (fullName.length() > 35) {
 			cout << fullName.length() << ' ' << fullName << endl;
-			cerr << "Žè¨¡ª  ¯à¨ çâ¥­¨¨ ¤ ­­ëå.\n";
-			cerr << "®«¥ ”ˆŽ ¤®«¦­® á®¤¥à¦ âì ­¥ ¡®«¥¥ 35 á¨¬¢®«®¢ ¤«ï ª®àà¥ªâ­®áâ¨ à ¡®âë ¯à®£à ¬¬ë.\n";
-			cerr << "®¦ «ã©áâ , ¨á¯à ¢ìâ¥ á®¤¥à¦¨¬®¥ ä ©« .\n";
+			cerr << "ÐžÑˆÐ¸Ð±ÐºÐ° Ð¿Ñ€Ð¸ Ñ‡Ñ‚ÐµÐ½Ð¸Ð¸ Ð´Ð°Ð½Ð½Ñ‹Ñ….\n";
+			cerr << "ÐŸÐ¾Ð»Ðµ Ð¤Ð˜Ðž Ð´Ð¾Ð»Ð¶Ð½Ð¾ ÑÐ¾Ð´ÐµÑ€Ð¶Ð°Ñ‚ÑŒ Ð½Ðµ Ð±Ð¾Ð»ÐµÐµ 35 ÑÐ¸Ð¼Ð²Ð¾Ð»Ð¾Ð² Ð´Ð»Ñ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ð¾ÑÑ‚Ð¸ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹.\n";
+			cerr << "ÐŸÐ¾Ð¶Ð°Ð»ÑƒÐ¹ÑÑ‚Ð°, Ð¸ÑÐ¿Ñ€Ð°Ð²ÑŒÑ‚Ðµ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ð¼Ð¾Ðµ Ñ„Ð°Ð¹Ð»Ð°.\n";
 			return false;
 		}
 		addElement(head, fullName, age, maritalStatus);
@@ -113,24 +114,24 @@ int getIntInput() {
 	while (!(std::cin >> input)) {
 		std::cin.clear();
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		std::cout << "¥ª®àà¥ªâ­ë© ¢¢®¤. ®¦ «ã©áâ , ¢¢¥¤¨â¥ æ¥«®¥ ç¨á«®: ";
+		std::cout << "ÐÐµÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ñ‹Ð¹ Ð²Ð²Ð¾Ð´. ÐŸÐ¾Ð¶Ð°Ð»ÑƒÐ¹ÑÑ‚Ð°, Ð²Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ†ÐµÐ»Ð¾Ðµ Ñ‡Ð¸ÑÐ»Ð¾: ";
 	}
 	return input;
 }
 void printFunctionsList() {
-    cout << "‘¯¨á®ª ¤®áâã¯­ëå ª®¬ ­¤:\n";
-    cout << "1) ®¤áç¨â âì ª®«¨ç¥áâ¢® í«¥¬¥­â®¢ c § ¤ ­­ë¬ á®¤¥à¦¨¬ë¬ ®¤­®£® ¨§ ¯®«¥©.\n";
-    cout << "2) ¥ç âì ¢á¥å í«¥¬¥­â®¢ ¢ ®âá®àâ¨à®¢ ­­®¬ ¢¨¤¥ (¯® ”ˆŽ).\n";
-    cout << "3) à¨á¢®¨âì ¢á¥¬ í«¥¬¥­â ¬ ¯à¥¤ãáâ ­®¢«¥­­ë¥ §­ ç¥­¨ï.\n";
-    cout << "4) ‚ëå®¤.\n";
-	cout << "‚¢¥¤¨â¥ ­®¬¥à ª®¬ ­¤ë: ";
+    cout << "Ð¡Ð¿Ð¸ÑÐ¾Ðº Ð´Ð¾ÑÑ‚ÑƒÐ¿Ð½Ñ‹Ñ… ÐºÐ¾Ð¼Ð°Ð½Ð´:\n";
+    cout << "1) ÐŸÐ¾Ð´ÑÑ‡Ð¸Ñ‚Ð°Ñ‚ÑŒ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² c Ð·Ð°Ð´Ð°Ð½Ð½Ñ‹Ð¼ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ð¼Ñ‹Ð¼ Ð¾Ð´Ð½Ð¾Ð³Ð¾ Ð¸Ð· Ð¿Ð¾Ð»ÐµÐ¹.\n";
+    cout << "2) ÐŸÐµÑ‡Ð°Ñ‚ÑŒ Ð²ÑÐµÑ… ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð² Ð¾Ñ‚ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð½Ð¾Ð¼ Ð²Ð¸Ð´Ðµ (Ð¿Ð¾ Ð¤Ð˜Ðž).\n";
+    cout << "3) ÐŸÑ€Ð¸ÑÐ²Ð¾Ð¸Ñ‚ÑŒ Ð²ÑÐµÐ¼ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð°Ð¼ Ð¿Ñ€ÐµÐ´ÑƒÑÑ‚Ð°Ð½Ð¾Ð²Ð»ÐµÐ½Ð½Ñ‹Ðµ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ.\n";
+    cout << "4) Ð’Ñ‹Ñ…Ð¾Ð´.\n";
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹: ";
 }
 void selectFieldForCounting() {
-    cout << "®«¥ ¢ë¡®àª¨:\n";
-    cout << "1) ¯® ä ¬¨«¨¨.\n2) ¯® ¨¬¥­¨.\n";
-    cout << "3) ¯® ®âç¥áâ¢ã.\n4) ¯® ¢®§à áâã.\n";
-    cout << "5) ¯® á¥¬¥©­®¬ã ¯®«®¦¥­¨î.\n";
-	cout << "‚¢¥¤¨â¥ ­®¬¥à ª®¬ ­¤ë: ";
+    cout << "ÐŸÐ¾Ð»Ðµ Ð²Ñ‹Ð±Ð¾Ñ€ÐºÐ¸:\n";
+    cout << "1) Ð¿Ð¾ Ñ„Ð°Ð¼Ð¸Ð»Ð¸Ð¸.\n2) Ð¿Ð¾ Ð¸Ð¼ÐµÐ½Ð¸.\n";
+    cout << "3) Ð¿Ð¾ Ð¾Ñ‚Ñ‡ÐµÑÑ‚Ð²Ñƒ.\n4) Ð¿Ð¾ Ð²Ð¾Ð·Ñ€Ð°ÑÑ‚Ñƒ.\n";
+    cout << "5) Ð¿Ð¾ ÑÐµÐ¼ÐµÐ¹Ð½Ð¾Ð¼Ñƒ Ð¿Ð¾Ð»Ð¾Ð¶ÐµÐ½Ð¸ÑŽ.\n";
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ ÐºÐ¾Ð¼Ð°Ð½Ð´Ñ‹: ";
 }
 int countElementsWithContent(Node* head, const string& content, const string& field) {
     int count {0};
@@ -138,7 +139,14 @@ int countElementsWithContent(Node* head, const string& content, const string& fi
     Node* temp = head;
     do {
 		if (field == "4" && to_string(temp->age) == content){count++;}
-		if (field == "5" && temp->maritalStatus == content){count++;}
+		if (field == "5" ){
+			string str = temp->maritalStatus;
+			str = regex_replace(str, regex("^ +"), "");
+			cout << str << endl;
+			if(str == content){
+				cout << "I'm here\n";
+				count++;}
+		}
 		vector<string> fio;
 		istringstream iss(temp->fullName);
 		copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter(fio));
@@ -160,7 +168,7 @@ void printSortedList(Node* head) {
     std::sort(nodes.begin(), nodes.end(), [](Node* a, Node* b) {
         return a->fullName < b->fullName;
     });
-    std::cout << std::left << std::setw(40) << "”ˆŽ" << std::setw(10) << "‚®§à áâ" << std::setw(20) << " ‘¥¬¥©­®¥ ¯®«®¦¥­¨¥" << std::endl;
+    std::cout << std::left << std::setw(40) << "Ð¤Ð˜Ðž" << std::setw(10) << "Ð’Ð¾Ð·Ñ€Ð°ÑÑ‚" << std::setw(20) << " Ð¡ÐµÐ¼ÐµÐ¹Ð½Ð¾Ðµ Ð¿Ð¾Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ" << std::endl;
     std::cout << "--------------------------------------------------------------------------------\n";
     for (Node* node : nodes) {
         std::cout << std::left << std::setw(40) << node->fullName << std::setw(10) << node->age << std::setw(20) << node->maritalStatus << std::endl;
@@ -181,13 +189,13 @@ void setDefaultValues(Node* head, const std::string& fullName, int age, const st
 
 void setList(Node*& head, const std::string& filename) {
 	clearList(head);
-	addElement(head, "ˆ¢ ­®¢ ‘¢ïâ®á« ¢ ˆ£®à¥¢¨ç", 25, "¥ ¦¥­ â");
-	addElement(head, "ˆè£ã«®¢  â¬¨à ãá« ­®¢¨ç", 18, "¥ ¦¥­ â");
-	addElement(head, "Œ «ëè¥¢ ‚« ¤¨¬¨à ˆ£®à¥¢¨ç", 19, "¥ ¦¥­ â");
-	addElement(head, "‡ ¬¨«®¢  €§ «¨ï ¨­ â®¢­ ", 19, "¥ § ¬ã¦¥¬");
-	addElement(head, " ã¬®¢ „¥­¨á Ž«¥£®¢¨ç", 31, "†¥­ â");
-	addElement(head, "Œãåâ à®¢ €¤¥«ì  ¬¨«¥¢¨ç", 24, "¥ ¦¥­ â");
-	addElement(head, "‘ ¬®©«®¢  €­ áâ á¨ï ®à¨á®¢­ ", 24, "‡ ¬ã¦¥¬");
-	addElement(head, "Š à¨¬®¢ €§ ¬ â ’¨¬ãà®¢¨ç", 43, "¥ ¦¥­ â");
+	addElement(head, "Ð˜Ð²Ð°Ð½Ð¾Ð² Ð¡Ð²ÑÑ‚Ð¾ÑÐ»Ð°Ð² Ð˜Ð³Ð¾Ñ€ÐµÐ²Ð¸Ñ‡", 25, "ÐÐµ Ð¶ÐµÐ½Ð°Ñ‚");
+	addElement(head, "Ð˜ÑˆÐ³ÑƒÐ»Ð¾Ð² Ð Ð°Ñ‚Ð¼Ð¸Ñ€ Ð ÑƒÑÐ»Ð°Ð½Ð¾Ð²Ð¸Ñ‡", 18, "ÐÐµ Ð¶ÐµÐ½Ð°Ñ‚");
+	addElement(head, "ÐœÐ°Ð»Ñ‹ÑˆÐµÐ² Ð’Ð»Ð°Ð´Ð¸Ð¼Ð¸Ñ€ Ð˜Ð³Ð¾Ñ€ÐµÐ²Ð¸Ñ‡", 19, "ÐÐµ Ð¶ÐµÐ½Ð°Ñ‚");
+	addElement(head, "Ð—Ð°Ð¼Ð¸Ð»Ð¾Ð²Ð° ÐÐ·Ð°Ð»Ð¸Ñ Ð Ð¸Ð½Ð°Ñ‚Ð¾Ð²Ð½Ð°", 19, "ÐÐµ Ð·Ð°Ð¼ÑƒÐ¶ÐµÐ¼");
+	addElement(head, "ÐÐ°ÑƒÐ¼Ð¾Ð² Ð”ÐµÐ½Ð¸Ñ ÐžÐ»ÐµÐ³Ð¾Ð²Ð¸Ñ‡", 31, "Ð–ÐµÐ½Ð°Ñ‚");
+	addElement(head, "ÐœÑƒÑ…Ñ‚Ð°Ñ€Ð¾Ð² ÐÐ´ÐµÐ»ÑŒ Ð Ð°Ð¼Ð¸Ð»ÐµÐ²Ð¸Ñ‡", 24, "ÐÐµ Ð¶ÐµÐ½Ð°Ñ‚");
+	addElement(head, "Ð¡Ð°Ð¼Ð¾Ð¹Ð»Ð¾Ð²Ð° ÐÐ½Ð°ÑÑ‚Ð°ÑÐ¸Ñ Ð‘Ð¾Ñ€Ð¸ÑÐ¾Ð²Ð½Ð°", 24, "Ð—Ð°Ð¼ÑƒÐ¶ÐµÐ¼");
+	addElement(head, "ÐšÐ°Ñ€Ð¸Ð¼Ð¾Ð² ÐÐ·Ð°Ð¼Ð°Ñ‚ Ð¢Ð¸Ð¼ÑƒÑ€Ð¾Ð²Ð¸Ñ‡", 43, "ÐÐµ Ð¶ÐµÐ½Ð°Ñ‚");
 	saveListToFile(head, filename);
 }
