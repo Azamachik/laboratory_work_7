@@ -15,7 +15,7 @@ int main() {
 			printFunctionsList();
 			getline(cin, input);
 		} while (!regex_match(input, valid_input));
-		cout << endl;
+		//cout << endl;
 		if (input == "1") {
 			string search_field, search_content;
 			int count {0};
@@ -26,8 +26,11 @@ int main() {
 			cout << "Введите содержимое поле: ";
 			getline(cin, search_content);
 			count = countElementsWithContent(head, search_content, search_field);
-            cout << "Количество элементов: " << count << '\n';
-			cout << endl;}
+			if (count == 0){
+				cerr << "Список пуст. Не могу выполнить данную операцию.\n";
+				cerr << "Пожалуйста, исправьте содержимое файла.\n";}
+			else {
+            cout << "Количество элементов: " << count << '\n';}}
 		else if (input == "2") printSortedList(head);
 		else if (input == "3") {
 			setDefaultValues(head, constants::fullName, constants::age, constants::status);
