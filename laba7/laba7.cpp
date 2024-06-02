@@ -7,9 +7,9 @@ int main() {
 	Node* head = nullptr;
 	if (!loadListFromFile(head, "list.txt")) {
 		return 1;}
-	else cout << "„ ­­ë¥ § £àã¦¥­ë" << endl;
+	else cout << "Ð”Ð°Ð½Ð½Ñ‹Ðµ Ð·Ð°Ð³Ñ€ÑƒÐ¶ÐµÐ½Ñ‹" << endl;
 	string input;
-	regex valid_input("[1-4]"), valid_field("[1-5]");
+	regex valid_input("[1-5]"), valid_field("[1-5]");
 	do {
 		do {
 			printFunctionsList();
@@ -23,19 +23,17 @@ int main() {
 				selectFieldForCounting();
 				getline(cin, search_field);
 			} while (!regex_match(search_field, valid_field));
-			cout << "‚¢¥¤¨â¥ á®¤¥à¦¨¬®¥ ¯®«¥: ";
+			cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÑÐ¾Ð´ÐµÑ€Ð¶Ð¸Ð¼Ð¾Ðµ Ð¿Ð¾Ð»Ðµ: ";
 			getline(cin, search_content);
 			count = countElementsWithContent(head, search_content, search_field);
-            cout << "Š®«¨ç¥áâ¢® í«¥¬¥­â®¢: " << count << '\n';
-			cout << endl;
-		}
+            cout << "ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð²: " << count << '\n';
+			cout << endl;}
 		else if (input == "2") printSortedList(head);
 		else if (input == "3") {
 			setDefaultValues(head, constants::fullName, constants::age, constants::status);
 			saveListToFile(head, "list.txt");}
-		else if (input == "3") setList(head, "list.txt");
-	} while (input != "4");
+		else if (input == "4") setList(head, "list.txt");
+	} while (input != "5");
 	clearList(head);
-	cout << "„® á¢¨¤ ­¨ï!" << endl;
-	return 0;
-}
+	cout << "Ð”Ð¾ ÑÐ²Ð¸Ð´Ð°Ð½Ð¸Ñ!" << endl;
+	return 0;}
