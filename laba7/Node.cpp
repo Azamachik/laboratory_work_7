@@ -9,130 +9,107 @@
 #include <iterator>
 #include <algorithm>
 using namespace std;
-void addElement(Node*& head, const std::string& fullName, int age, const std::string& maritalStatus) {
+void addElement(Node*& head, const string& fullName, int age, const string& maritalStatus) {
 	Node* newNode = new Node{ fullName, age, maritalStatus, nullptr, nullptr };
 	if (!newNode) {
-		throw std::runtime_error("Memory allocation failed");
-	}
+		throw runtime_error("Memory allocation failed");}
 	if (!head) {
 		head = newNode;
 		head->next = head;
-		head->prev = head;
-	}
+		head->prev = head;}
 	else {
 		Node* tail = head->prev;
 		tail->next = newNode;
 		newNode->prev = tail;
 		newNode->next = head;
-		head->prev = newNode;
-	}
-}
-
+		head->prev = newNode;}}
 void printList(Node* head) {
 	if (!head) {
-		std::cout << "Список пуст" << std::endl;
-		return;
-	}
-
+		cout << "Список пуст" << endl;
+		return;}
 	Node* current = head;
-	std::cout << "Список" << std::endl;
+	cout << "Список" << endl;
 	do {
-		std::cout << "ФИО: " << current->fullName << ", Возраст: " << current->age << ", Семейное положение: " << current->maritalStatus << std::endl;
+		cout << "ФИО: " << current->fullName << ", Возраст: " << current->age << ", Семейное положение: " << current->maritalStatus << endl;
 		current = current->next;
 	} while (current != head);
-	std::cout << std::endl;
-}
-
-void saveListToFile(Node* head, const std::string& filename) {
-	std::ofstream outFile(filename);
+	cout << endl;}
+void saveListToFile(Node* head, const string& filename) {
+	ofstream outFile(filename);
 	if (!outFile) {
-		std::cerr << "Ошибка открытия файла для записи" << std::endl;
-		return;
-	}
+		cerr << "Ошибка открытия файла для записи" << endl;
+		return;}
 	if (!head) {
 		outFile << "";
-		return;
-	}
+		return;}
 	Node* current = head;
 	do {
 		outFile << current->fullName << "; " << current->age << "; " << current->maritalStatus << "\n";
 		current = current->next;
-	} while (current != head);
-}
-
-bool loadListFromFile(Node*& head, const std::string& filename) {
-	std::ifstream inFile(filename);
+	} while (current != head);}
+bool loadListFromFile(Node*& head, const string& filename) {
+	ifstream inFile(filename);
 	if (!inFile) {
-		std::cerr << "Ошибка открытия файла для чтения" << std::endl;
-		return false;
-	}
-
-	std::string line;
-	while (std::getline(inFile, line)) {
-		std::istringstream ss(line);
-		std::string fullName, maritalStatus;
+		cerr << "Ошибка открытия файла для чтения" << endl;
+		return false;}
+	string line;
+	regex valid_fio("^[A-Za-zА-Яа-я]+? [A-Za-zА-Яа-я]+? [A-Za-zА-Яа-я]+?$");
+	while (getline(inFile, line)) {
+		istringstream ss(line);
+		string fullName, maritalStatus;
 		int age;
 		char delimiter;
-
-		std::getline(ss, fullName, ';');
+		getline(ss, fullName, ';');
 		ss >> age >> delimiter;
-		std::getline(ss, maritalStatus);
+		getline(ss, maritalStatus);
+		if (!regex_match(fullName, valid_fio)) {
+			cerr << "Ошибка при чтении данных.\n";
+			cerr << "Некорректное ФИО. (пример: Янов Ян Янович)\n";
+			cerr << "Пожалуйста, исправьте содержимое файла.\n";
+			return false;}
 		if(!(fullName.length() && bool(age) && maritalStatus.length())) {
 			cerr << "Ошибка при чтении данных.\n";
 			cerr << "Пропущено одно из полей.\n";
 			cerr << "Пожалуйста, исправьте содержимое файла.\n";
-			return false;
-		}
+			return false;}
 		if (fullName.length() > 35) {
-			cout << fullName.length() << ' ' << fullName << endl;
 			cerr << "Ошибка при чтении данных.\n";
 			cerr << "Поле ФИО должно содержать не более 35 символов для корректности работы программы.\n";
 			cerr << "Пожалуйста, исправьте содержимое файла.\n";
-			return false;
-		}
-		addElement(head, fullName, age, maritalStatus);
-	}
+			return false;}
+		addElement(head, fullName, age, maritalStatus);}
 	inFile.close();
-	return true;
-}
-
+	return true;}
 void clearList(Node*& head) {
 	if (!head) return;
-
 	Node* current = head;
 	do {
 		Node* temp = current;
 		current = current->next;
 		delete temp;
 	} while (current != head);
-
-	head = nullptr;
-}
-
+	head = nullptr;}
 int getIntInput() {
 	int input;
 	while (!(std::cin >> input)) {
-		std::cin.clear();
-		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		std::cout << "Некорректный ввод. Пожалуйста, введите целое число: ";
-	}
-	return input;
-}
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << "Некорректный ввод. Пожалуйста, введите целое число: ";}
+	return input;}
 void printFunctionsList() {
     cout << "Список доступных команд:\n";
     cout << "1) Подсчитать количество элементов c заданным содержимым одного из полей.\n";
     cout << "2) Печать всех элементов в отсортированном виде (по ФИО).\n";
     cout << "3) Присвоить всем элементам предустановленные значения.\n";
-    cout << "4) Выход.\n";
-	cout << "Введите номер команды: ";
-}
+	cout << "4) Заполнить данными.\n";
+    cout << "5) Выход.\n";
+	cout << "Введите номер команды: ";}
 void selectFieldForCounting() {
     cout << "Поле выборки:\n";
     cout << "1) по фамилии.\n2) по имени.\n";
     cout << "3) по отчеству.\n4) по возрасту.\n";
     cout << "5) по семейному положению.\n";
-	cout << "Введите номер команды: ";
-}
+	cout << "Введите номер команды: ";}
 int countElementsWithContent(Node* head, const string& content, const string& field) {
     int count {0};
     if (!head) return count;
@@ -145,8 +122,7 @@ int countElementsWithContent(Node* head, const string& content, const string& fi
 			cout << str << endl;
 			if(str == content){
 				cout << "I'm here\n";
-				count++;}
-		}
+				count++;}}
 		vector<string> fio;
 		istringstream iss(temp->fullName);
 		copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter(fio));
@@ -155,39 +131,33 @@ int countElementsWithContent(Node* head, const string& content, const string& fi
 		if (field == "3" && fio[2] == content){count++;}
         temp = temp->next;
     } while (temp != head);
-    return count;
-}
+    return count;}
 void printSortedList(Node* head) {
     if (!head) return;
-    std::vector<Node*> nodes;
+    vector<Node*> nodes;
     Node* temp = head;
     do {
         nodes.push_back(temp);
         temp = temp->next;
     } while (temp != head);
-    std::sort(nodes.begin(), nodes.end(), [](Node* a, Node* b) {
-        return a->fullName < b->fullName;
-    });
-    std::cout << std::left << std::setw(40) << "ФИО" << std::setw(10) << "Возраст" << std::setw(20) << " Семейное положение" << std::endl;
-    std::cout << "--------------------------------------------------------------------------------\n";
+    sort(nodes.begin(), nodes.end(), [](Node* a, Node* b) {
+        return a->fullName < b->fullName;});
+    cout << left << setw(40) << "ФИО" << setw(10) << "Возраст" << setw(20) << " Семейное положение" << endl;
+    cout << "--------------------------------------------------------------------------------\n";
     for (Node* node : nodes) {
-        std::cout << std::left << std::setw(40) << node->fullName << std::setw(10) << node->age << std::setw(20) << node->maritalStatus << std::endl;
+    cout << left << setw(40) << node->fullName << setw(10) << node->age << setw(20) << node->maritalStatus << endl;
     }
-	cout << endl;
-}
-void setDefaultValues(Node* head, const std::string& fullName, int age, const std::string& maritalStatus) {
+	cout << endl;}
+void setDefaultValues(Node* head, const string& fullName, int age, const string& maritalStatus) {
 	if (!head) return;
-
 	Node* current = head;
 	do {
 		current->fullName = fullName;
 		current->age = age;
 		current->maritalStatus = maritalStatus;
 		current = current->next;
-	} while (current != head);
-}
-
-void setList(Node*& head, const std::string& filename) {
+	} while (current != head);}
+void setList(Node*& head, const string& filename) {
 	clearList(head);
 	addElement(head, "Иванов Святослав Игоревич", 25, "Не женат");
 	addElement(head, "Ишгулов Ратмир Русланович", 18, "Не женат");
@@ -197,5 +167,4 @@ void setList(Node*& head, const std::string& filename) {
 	addElement(head, "Мухтаров Адель Рамилевич", 24, "Не женат");
 	addElement(head, "Самойлова Анастасия Борисовна", 24, "Замужем");
 	addElement(head, "Каримов Азамат Тимурович", 43, "Не женат");
-	saveListToFile(head, filename);
-}
+	saveListToFile(head, filename);}
