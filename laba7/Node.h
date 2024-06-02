@@ -3,35 +3,25 @@
 #include <string>
 using namespace std;
 struct Node {
-	std::string fullName;
+	string fullName;
 	int age;
-	std::string maritalStatus;
+	string maritalStatus;
 	Node* prev;
-	Node* next;
-};
-
+	Node* next;};
 namespace constants {
-	const std::string fullName{ "ˆ¢ ­®¢ ˆ¢ ­ ˆ¢ ­®¢¨ç" };
-	const std::string status{ "­¥ ¦¥­ â" };
-	const int age{ 20 };
-}
-
-void addElement(Node*& head, const std::string& fullName, int age, const std::string& maritalStatus);
+	const string fullName{ "Ð˜Ð²Ð°Ð½Ð¾Ð² Ð˜Ð²Ð°Ð½ Ð˜Ð²Ð°Ð½Ð¾Ð²Ð¸Ñ‡" };
+	const string status{ "Ð½Ðµ Ð¶ÐµÐ½Ð°Ñ‚" };
+	const int age{ 20 };}
+void addElement(Node*& head, const string& fullName, int age, const string& maritalStatus);
 void printList(Node* head);
 void selectFieldForCounting();
-bool deleteElement(Node*& head, const std::string& searchValue);
-void saveListToFile(Node* head, const std::string& filename);
-bool loadListFromFile(Node*& head, const std::string& filename);
-
+void saveListToFile(Node* head, const string& filename);
+bool loadListFromFile(Node*& head, const string& filename);
 void clearList(Node*& head);
-
 int getIntInput();
 void printSortedList(Node* head);
-int countElementsWithContent(Node* head, const std::string& content, const string& field);
-void setDefaultValues(Node* head, const std::string& fullName, int age, const std::string& maritalStatus);
-
-
-void setList(Node*& head, const std::string& filename);
-
+int countElementsWithContent(Node* head, const string& content, const string& field);
+void setDefaultValues(Node* head, const string& fullName, int age, const string& maritalStatus);
+void setList(Node*& head, const string& filename);
 void printFunctionsList();
 #endif
