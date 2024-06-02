@@ -77,6 +77,11 @@ bool loadListFromFile(Node*& head, const string& filename) {
 			cerr << "Поле ФИО должно содержать не более 35 символов для корректности работы программы.\n";
 			cerr << "Пожалуйста, исправьте содержимое файла.\n";
 			return false;}
+		if (maritalStatus.length() > 15) {
+			cerr << "Ошибка при чтении данных.\n";
+			cerr << "Поле семейное положение должно содержать не более 15 символов для корректности работы программы.\n";
+			cerr << "Пожалуйста, исправьте содержимое файла.\n";
+			return false;}
 		addElement(head, fullName, age, maritalStatus);}
 	inFile.close();
 	return true;}
@@ -91,7 +96,7 @@ void clearList(Node*& head) {
 	head = nullptr;}
 int getIntInput() {
 	int input;
-	while (!(std::cin >> input)) {
+	while (!(cin >> input)) {
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cout << "Некорректный ввод. Пожалуйста, введите целое число: ";}
@@ -116,13 +121,10 @@ int countElementsWithContent(Node* head, const string& content, const string& fi
     Node* temp = head;
     do {
 		if (field == "4" && to_string(temp->age) == content){count++;}
-		if (field == "5" ){
+		if (field == "5"){
 			string str = temp->maritalStatus;
 			str = regex_replace(str, regex("^ +"), "");
-			cout << str << endl;
-			if(str == content){
-				cout << "I'm here\n";
-				count++;}}
+			if(str == content){count++;}}
 		vector<string> fio;
 		istringstream iss(temp->fullName);
 		copy(istream_iterator<string>(iss), istream_iterator<string>(), back_inserter(fio));
@@ -133,13 +135,17 @@ int countElementsWithContent(Node* head, const string& content, const string& fi
     } while (temp != head);
     return count;}
 void printSortedList(Node* head) {
-    if (!head) return;
+    if (!head) {
+	cerr << "Список пуст. Не могу выполнить данную операцию.\n";
+	cerr << "Пожалуйста, исправьте содержимое файла.\n";
+	return;}
     vector<Node*> nodes;
     Node* temp = head;
     do {
         nodes.push_back(temp);
         temp = temp->next;
     } while (temp != head);
+	cout << nodes.size() << endl;
     sort(nodes.begin(), nodes.end(), [](Node* a, Node* b) {
         return a->fullName < b->fullName;});
     cout << left << setw(40) << "ФИО" << setw(10) << "Возраст" << setw(20) << " Семейное положение" << endl;
@@ -149,7 +155,10 @@ void printSortedList(Node* head) {
     }
 	cout << endl;}
 void setDefaultValues(Node* head, const string& fullName, int age, const string& maritalStatus) {
-	if (!head) return;
+	if (!head) {
+	cerr << "Список пуст. Не могу выполнить данную операцию.\n";
+	cerr << "Пожалуйста, исправьте содержимое файла.\n";
+	return;}
 	Node* current = head;
 	do {
 		current->fullName = fullName;
